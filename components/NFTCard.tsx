@@ -6,12 +6,13 @@ import {
   Heading,
   AspectRatio,
 } from "@chakra-ui/react";
+import { NFT } from "opensea-js";
 import useNFT from "../hooks/useNFT";
 interface Props {
   ethAddress: string;
 }
 const NFTCard = ({ ethAddress }: Props) => {
-  const { nfts } = useNFT(ethAddress);
+  const { nfts, gotoNext } = useNFT(ethAddress);
   return (
     <>
       {nfts && (
@@ -21,12 +22,12 @@ const NFTCard = ({ ethAddress }: Props) => {
       )}
       <SimpleGrid mb={4} columns={5} spacing={1}>
         {nfts &&
-          nfts.map((data: any) => (
-            <Link key={data.id} href={data.permalink} isExternal p={1}>
+          nfts.map((data: NFT) => (
+            <Link key={data.identifier} isExternal p={1}>
               <AspectRatio
                 maxW="100%"
                 ratio={1}
-                backgroundImage={data.image_preview_url}
+                backgroundImage={data.image_url}
                 backgroundPosition="center"
                 backgroundSize="cover"
                 overflow="hidden"
@@ -40,6 +41,7 @@ const NFTCard = ({ ethAddress }: Props) => {
             </Link>
           ))}
       </SimpleGrid>
+      <Link onClick={gotoNext}>Next</Link>
     </>
   );
 };
